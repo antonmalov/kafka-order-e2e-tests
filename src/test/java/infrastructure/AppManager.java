@@ -1,5 +1,6 @@
 package infrastructure;
 
+import config.TestConfig;
 import utils.HealthChecker;
 
 import java.io.File;
@@ -10,15 +11,9 @@ public class AppManager {
     private Process producerProcess;
     private Process consumerProcess;
 
-    private static final String PRODUCER_JAR = "apps/producer-service.jar";
-    private static final String CONSUMER_JAR = "apps/notification-service.jar";
-    private static final String KAFKA_BOOTSTRAP = "localhost:9092";
-    private static final int PRODUCER_PORT = 8081;
-    private static final int CONSUMER_PORT = 8080;
-
     public void start() throws Exception {
-        producerProcess = startApp(PRODUCER_JAR, PRODUCER_PORT);
-        consumerProcess = startApp(CONSUMER_JAR, CONSUMER_PORT);
+        producerProcess = startApp(TestConfig.PRODUCER_JAR, TestConfig.PRODUCER_PORT);
+        consumerProcess = startApp(TestConfig.CONSUMER_JAR, TestConfig.CONSUMER_PORT);
         waitForStartup();
     }
 
@@ -28,7 +23,7 @@ public class AppManager {
     }
 
     public String getProducerUrl() {
-        return "http://localhost:" + PRODUCER_PORT;
+        return "http://localhost:" + TestConfig.PRODUCER_PORT;
     }
 
     private Process startApp(String jarPath, int port) throws Exception {
@@ -42,7 +37,7 @@ public class AppManager {
                 "-jar",
                 jarFile.getAbsolutePath(),
                 "--server.port=" + port,
-                "--spring.kafka.bootstrap-servers=" + KAFKA_BOOTSTRAP
+                "--spring.kafka.bootstrap-servers=" + TestConfig.KAFKA_BOOTSTRAP
         );
         pb.inheritIO();
         return pb.start();
@@ -50,7 +45,7 @@ public class AppManager {
 
     private void waitForStartup() throws InterruptedException {
         HealthChecker healthChecker = new HealthChecker();
-        healthChecker.waitForReady("http://localhost:" + PRODUCER_PORT + "/actuator/health");
-        healthChecker.waitForReady("http://localhost:" + CONSUMER_PORT + "/actuator/health");
+        healthChecker.waitForReady("http://localhost:" + TestConfig.PRODUCER_PORT + "/actuator/health");
+        healthChecker.waitForReady("http://localhost:" + TestConfig.CONSUMER_PORT + "/actuator/health");
     }
 }

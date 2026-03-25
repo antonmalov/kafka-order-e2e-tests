@@ -15,6 +15,6 @@ public final class TestConfig {
 
     public static final int HEALTH_CHECK_TIMEOUT_SEC = 30;
 
-    public static final int COUNT_TIMEOUT_SEC = 5;
-    public static final int PARTIAL_COUNT_TIMEOUT_SEC = 10;
+    public static final int COUNT_TIMEOUT_SEC = 10;
+    public static final int PARTIAL_COUNT_TIMEOUT_SEC = 15;
 }

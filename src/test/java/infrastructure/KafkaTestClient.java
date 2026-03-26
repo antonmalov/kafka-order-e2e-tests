@@ -44,5 +44,3 @@ public class KafkaTestClient {
         return new KafkaConsumer<>(props);
     }
 }
-
-

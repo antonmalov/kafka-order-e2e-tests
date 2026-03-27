@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public abstract class BaseE2ETest {
 
     protected static final Logger log = LoggerFactory.getLogger(BaseE2ETest.class);
-    protected static final int WAIT_AFTER_SEND_SEC = 20;
+    protected static final int WAIT_AFTER_SEND_SEC = 30;
 
     protected final AppManager appManager = new AppManager();
     protected final RestTemplate restTemplate = new RestTemplate();

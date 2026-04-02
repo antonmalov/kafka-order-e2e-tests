@@ -87,7 +87,7 @@ jobs:
         env:
           HEALTH_CHECK_TIMEOUT_SEC: 60
           SPRING_PROFILES_ACTIVE: ci
-          MONGODB_CONTAINER_NAME: mongodb
+          MONGODB_CONTAINER_NAME: kafka-order-e2e-tests-mongodb-1
 
       - name: Stop containers
         if: always()

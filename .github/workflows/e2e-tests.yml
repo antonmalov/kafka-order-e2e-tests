@@ -29,7 +29,7 @@ jobs:
       - name: Start containers
         run: docker compose up -d
 
-      - name: Wait for services to be healthy
+      - name: Wait for services
         run: |
           echo "Waiting for PostgreSQL..."
           while ! docker compose exec postgres pg_isready -U user -d orders_db; do sleep 2; done

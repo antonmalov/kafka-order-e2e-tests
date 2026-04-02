@@ -26,4 +26,20 @@ public class MongoTestClient {
             return false;
         }
     }
+
+    public boolean waitForOrder(String orderId, int timeoutSeconds) {
+        long start = System.currentTimeMillis();
+        while (System.currentTimeMillis() - start < timeoutSeconds * 1000L) {
+            if (isOrderSaved(orderId)) {
+                return true;
+            }
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }
+        return false;
+    }
 }

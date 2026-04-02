@@ -41,7 +41,7 @@ class OrderE2ETest extends BaseE2ETest {
 
 
         assertTrue(dbClient.isOrderSaved(uniqueId), "Order should be saved in database");
-        assertTrue(mongoClient.isOrderSaved(uniqueId), "Order should be saved in MongoDB");
+        assertTrue(mongoClient.waitForOrder(uniqueId, 10), "Order should be saved in MongoDB");
 
     }
 

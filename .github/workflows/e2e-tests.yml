@@ -32,11 +32,11 @@ jobs:
       - name: Wait for services to be healthy
         run: |
           echo "Waiting for PostgreSQL..."
-          while [ "$(docker inspect --format='{{.State.Health.Status}}' $(docker ps -q -f name=postgres))" != "healthy" ]; do sleep 2; done
-          echo "PostgreSQL is healthy"
+          while ! docker compose exec postgres pg_isready -U user -d orders_db; do sleep 2; done
+          echo "PostgreSQL is ready"
           echo "Waiting for MongoDB..."
-          while [ "$(docker inspect --format='{{.State.Health.Status}}' $(docker ps -q -f name=mongodb))" != "healthy" ]; do sleep 2; done
-          echo "MongoDB is healthy"
+          while ! docker compose exec mongodb mongosh --eval "db.runCommand({ping:1})" --quiet; do sleep 2; done
+          echo "MongoDB is ready"
           echo "Waiting for Kafka..."
           while ! docker compose exec kafka kafka-topics --bootstrap-server localhost:9092 --list; do sleep 2; done
           echo "Kafka is ready"

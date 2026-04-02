@@ -26,11 +26,21 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
-      - name: Start Kafka, Zookeeper, PostgreSQL
+      - name: Start containers
         run: docker compose up -d
 
-      - name: Wait for services
-        run: sleep 15
+      - name: Wait for services to be healthy
+        run: |
+          echo "Waiting for PostgreSQL..."
+          while [ "$(docker inspect --format='{{.State.Health.Status}}' $(docker ps -q -f name=postgres))" != "healthy" ]; do sleep 2; done
+          echo "PostgreSQL is healthy"
+          echo "Waiting for MongoDB..."
+          while [ "$(docker inspect --format='{{.State.Health.Status}}' $(docker ps -q -f name=mongodb))" != "healthy" ]; do sleep 2; done
+          echo "MongoDB is healthy"
+          echo "Waiting for Kafka..."
+          while ! docker compose exec kafka kafka-topics --bootstrap-server localhost:9092 --list; do sleep 2; done
+          echo "Kafka is ready"
+          sleep 5
 
       - name: Clone and install common-dto
         run: |
@@ -55,6 +65,8 @@ jobs:
 
       - name: Run E2E tests
         run: mvn clean test
+        env:
+          HEALTH_CHECK_TIMEOUT_SEC: 60
 
       - name: Stop containers
         if: always()

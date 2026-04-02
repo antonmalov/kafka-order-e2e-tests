@@ -67,6 +67,7 @@ jobs:
         run: mvn clean test
         env:
           HEALTH_CHECK_TIMEOUT_SEC: 60
+          SPRING_PROFILES_ACTIVE: ci
 
       - name: Stop containers
         if: always()

@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 public class MongoTestClient {
 
-    private static final String CONTAINER_NAME = "kafka-compose-mongodb-1";
+    private static final String CONTAINER_NAME = System.getenv().getOrDefault("MONGODB_CONTAINER_NAME", "kafka-compose-mongodb-1");
 
     public boolean isOrderSaved(String orderId) {
         try {
@@ -34,7 +34,7 @@ public class MongoTestClient {
                 return true;
             }
             try {
-                Thread.sleep(500);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 break;

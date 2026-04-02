@@ -3,6 +3,7 @@ package tests;
 import config.TestConfig;
 import infrastructure.DatabaseTestClient;
 import infrastructure.KafkaTestClient;
+import infrastructure.MongoTestClient;
 import io.qameta.allure.*;
 import org.example.dto.OrderRequest;
 import org.junit.jupiter.api.Test;
@@ -20,6 +21,8 @@ class OrderE2ETest extends BaseE2ETest {
     private static final Logger log = LoggerFactory.getLogger(OrderE2ETest.class);
     private final KafkaTestClient kafkaClient = new KafkaTestClient();
     private final DatabaseTestClient dbClient = new DatabaseTestClient();
+    private final MongoTestClient mongoClient = new MongoTestClient();
+
 
     @Test
     @Story("Positive scenario")
@@ -36,7 +39,10 @@ class OrderE2ETest extends BaseE2ETest {
         assertEquals(1, countInMain);
         assertEquals(0, countInDlt);
 
+
         assertTrue(dbClient.isOrderSaved(uniqueId), "Order should be saved in database");
+        assertTrue(mongoClient.isOrderSaved(uniqueId), "Order should be saved in MongoDB");
+
     }
 
     @Test

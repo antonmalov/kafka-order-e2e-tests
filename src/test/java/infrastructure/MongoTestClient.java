@@ -6,7 +6,8 @@ import java.util.stream.Collectors;
 
 public class MongoTestClient {
 
-    private static final String CONTAINER_NAME = System.getenv().getOrDefault("MONGODB_CONTAINER_NAME", "kafka-compose-mongodb-1");
+    private static final String CONTAINER_NAME = System.getenv().getOrDefault("MONGODB_CONTAINER_NAME",
+            "kafka-compose-mongodb-1");
 
     public boolean isOrderSaved(String orderId) {
         try {

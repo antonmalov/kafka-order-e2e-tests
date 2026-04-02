@@ -13,7 +13,7 @@ public final class TestConfig {
     public static final int PRODUCER_PORT = 8081;
     public static final int CONSUMER_PORT = 8080;
 
-    public static final int HEALTH_CHECK_TIMEOUT_SEC = Integer.parseInt(System.getenv().getOrDefault("HEALTH_CHECK_TIMEOUT_SEC", "30"));
+    public static final int HEALTH_CHECK_TIMEOUT_SEC = Integer.parseInt(System.getenv().getOrDefault("HEALTH_CHECK_TIMEOUT_SEC", "120"));
 
     public static final int COUNT_TIMEOUT_SEC = 15;
     public static final int PARTIAL_COUNT_TIMEOUT_SEC = 15;

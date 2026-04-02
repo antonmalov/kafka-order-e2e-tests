@@ -63,6 +63,25 @@ jobs:
           cp producer/target/order-service-0.0.1-SNAPSHOT.jar apps/producer-service.jar
           cp consumer/target/notification-service-0.0.1-SNAPSHOT.jar apps/notification-service.jar
 
+      - name: Test consumer startup (diagnostic)
+        run: |
+          echo "Starting consumer in background..."
+          java -jar apps/notification-service.jar --server.port=8080 --spring.kafka.bootstrap-servers=localhost:9092 --spring.profiles.active=ci &
+          CONSUMER_PID=$!
+          echo "Waiting for consumer to start (30 seconds)..."
+          sleep 30
+          echo "Checking health endpoint..."
+          if curl -f http://localhost:8080/actuator/health; then
+            echo "Consumer started successfully"
+          else
+            echo "Consumer health check failed"
+            echo "=== Consumer logs ==="
+            # Здесь мы не можем получить логи, так как они выводятся в консоль, но они уже видны
+            kill $CONSUMER_PID
+            exit 1
+          fi
+          kill $CONSUMER_PID
+
       - name: Run E2E tests
         run: mvn clean test
         env:
